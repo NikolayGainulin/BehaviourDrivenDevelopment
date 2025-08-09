@@ -16,11 +16,19 @@ repositories {
 }
 
 dependencies {
+    // JUnit 5 для тестов
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.2"
+
+    // Selenide (уже включает нужные версии Selenium)
     testImplementation 'com.codeborne:selenide:6.19.1'
-    testImplementation 'org.slf4j:slf4j-simple:1.7.32'
+
+    // Логирование (одна версия для всех scope)
+    testImplementation 'org.slf4j:slf4j-simple:2.0.9'
+
+    // Lombok (только для тестов)
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.6.3'
 }
 
 test {
