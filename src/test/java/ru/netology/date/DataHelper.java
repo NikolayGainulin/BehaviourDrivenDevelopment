@@ -3,7 +3,7 @@ package ru.netology.date;
 import lombok.Value;
 
 public class DataHelper {
-    private DataHelper(){
+    private DataHelper() {
     }
 
     public static VerificationCode getVerificationCode() {

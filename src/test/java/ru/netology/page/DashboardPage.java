@@ -7,18 +7,20 @@ import ru.netology.date.DataHelper;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Condition.text;
 
 public class DashboardPage {
-    private final String balanceStart = "баланс: ";
-    private final String balanceFinish = " р.";
-    private final SelenideElement heading = $("[data-test-id=dashboard]");
-    private final ElementsCollection cards = $$(".list__item div");
-    private final SelenideElement reloadButton = $("[data-test-id='action-reload']");
+    private static final String BALANCE_START = "баланс: ";
+    private static final String BALANCE_FINISH = " р.";
+    private static final String DASHBOARD_SELECTOR = "[data-test-id=dashboard]";
+    private static final String CARD_ITEM_SELECTOR = ".list__item div";
+    private static final String RELOAD_BUTTON_SELECTOR = "[data-test-id='action-reload']";
+
+    private final SelenideElement heading = $(DASHBOARD_SELECTOR);
+    private final ElementsCollection cards = $$(CARD_ITEM_SELECTOR);
+    private final SelenideElement reloadButton = $(RELOAD_BUTTON_SELECTOR);
 
     public DashboardPage() {
-        heading.shouldBe(visible);
+        heading.shouldBe(Condition.visible);
     }
 
     public int getCardBalance(DataHelper.CardInfo cardInfo) {
@@ -37,20 +39,22 @@ public class DashboardPage {
 
     public void reloadDashboardPage() {
         reloadButton.click();
-        heading.shouldBe(visible);
+        heading.shouldBe(Condition.visible);
     }
 
     private int extractBalance(String text) {
-        var start = text.indexOf(balanceStart);
-        var finish = text.indexOf(balanceFinish);
-        var value = text.substring(start + balanceStart.length(), finish)
-                .trim()
-                .replaceAll("[^0-9]", "");
-        return Integer.parseInt(value);
+        try {
+            var start = text.indexOf(BALANCE_START);
+            var finish = text.indexOf(BALANCE_FINISH);
+            var value = text.substring(start + BALANCE_START.length(), finish);
+            return Integer.parseInt(value.trim());
+        } catch (Exception e) {
+            throw new RuntimeException("Could not extract balance from text: " + text, e);
+        }
     }
 
     public void checkCardBalance(DataHelper.CardInfo cardInfo, int expectedBalance) {
-        getCard(cardInfo).shouldBe(visible)
-                .shouldHave(text(balanceStart + expectedBalance + balanceFinish));
+        getCard(cardInfo).shouldBe(Condition.visible)
+                .shouldHave(Condition.text(BALANCE_START + expectedBalance + BALANCE_FINISH));
     }
 }
