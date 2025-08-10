@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import ru.netology.date.DataHelper;
 import ru.netology.page.DashboardPage;
 import ru.netology.page.LoginPage;
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static com.codeborne.selenide.Selenide.open;
@@ -19,11 +18,6 @@ public class MoneyTransferTest {
     int firstCardBalance;
     int secondCardBalance;
 
-    @BeforeAll
-    static void setupAll() {
-        // Инициализация WebDriverManager перед всеми тестами
-        WebDriverManager.chromedriver().setup();
-    }
 
     @BeforeEach
     void setup() {

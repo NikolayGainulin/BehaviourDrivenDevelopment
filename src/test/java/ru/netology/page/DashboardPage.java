@@ -12,7 +12,7 @@ import static com.codeborne.selenide.Condition.text;
 
 public class DashboardPage {
     private final String balanceStart = "баланс: ";
-    private final String balanceFinish = " р. ";
+    private final String balanceFinish = " р.";
     private final SelenideElement heading = $("[data-test-id=dashboard]");
     private final ElementsCollection cards = $$(".list__item div");
     private final SelenideElement reloadButton = $("[data-test-id='action-reload']");
@@ -43,11 +43,14 @@ public class DashboardPage {
     private int extractBalance(String text) {
         var start = text.indexOf(balanceStart);
         var finish = text.indexOf(balanceFinish);
-        var value = text.substring(start + balanceStart.length(), finish);
+        var value = text.substring(start + balanceStart.length(), finish)
+                .trim()
+                .replaceAll("[^0-9]", "");
         return Integer.parseInt(value);
     }
 
     public void checkCardBalance(DataHelper.CardInfo cardInfo, int expectedBalance) {
-        getCard(cardInfo).should(visible).should(text(balanceStart + expectedBalance + balanceFinish));
+        getCard(cardInfo).shouldBe(visible)
+                .shouldHave(text(balanceStart + expectedBalance + balanceFinish));
     }
 }
